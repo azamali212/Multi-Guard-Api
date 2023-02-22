@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Admin\TeacherRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,13 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // Admin Route
-Route::post('admin/create',[RegisterController::class,'AdminRegister']);
+//Route::post('admin/create',[RegisterController::class,'AdminRegister']);
 Route::post('admin/login',[App\Http\Controllers\Admin\LoginController::class,'AdminLogin']);
+//Route::get('teacher',[TeacherRegisterController::class,'teacher']);
 
 Route::group(['prefix'=>'admin','middleware'=> ['auth:admin-api']],function(){
+   
+    Route::get('teacher',[TeacherRegisterController::class,'index']);
 });
     
 

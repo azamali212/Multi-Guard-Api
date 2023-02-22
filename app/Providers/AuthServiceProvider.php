@@ -26,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('api') ? true : null;
+        });
+
         Passport::routes();
 
         Passport::tokensExpireIn(now()->addDays(15));

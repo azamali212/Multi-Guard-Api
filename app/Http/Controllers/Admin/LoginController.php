@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiResponser;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -24,4 +25,6 @@ class LoginController extends Controller
             return response()->json(['error' => 'Unauthorised'], 401);
         }  
     }
+
+    
 }
