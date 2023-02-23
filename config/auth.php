@@ -48,18 +48,18 @@ return [
         ],
 
         'admin-api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
         ],
 
 
         'teacher-api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'teachers',
         ],
 
         'student-api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'students',
         ],
         

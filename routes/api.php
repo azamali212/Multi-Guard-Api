@@ -23,13 +23,13 @@ use Spatie\Permission\Models\Role;
 // });
 
 // Admin Route
-//Route::post('admin/create',[RegisterController::class,'AdminRegister']);
 Route::post('admin/login',[App\Http\Controllers\Admin\LoginController::class,'AdminLogin']);
-//Route::get('teacher',[TeacherRegisterController::class,'teacher']);
-
 Route::group(['prefix'=>'admin','middleware'=> ['auth:admin-api']],function(){
-   
     Route::get('teacher',[TeacherRegisterController::class,'index']);
+    Route::post('teacher/store',[TeacherRegisterController::class,'create']);
+    Route::get('teacher/{id}',[TeacherRegisterController::class,'show']);
+    Route::put('teacher/{id}',[TeacherRegisterController::class,'update']);
+    Route::delete('teacher/{id}',[TeacherRegisterController::class,'destory']);
 });
     
 

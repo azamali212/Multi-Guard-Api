@@ -54,8 +54,29 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
-        'auth:api' => \App\Http\Middleware\Authenticate::class,
-        'auth:admin-api' => \App\Http\Middleware\Authenticate::class,
+        'admin-api' => [
+            'throttle:60,1',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+            \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        ],
+        
+        'teacher-api' => [
+            'throttle:60,1',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+            \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        ],
+        
+        'student-api' => [
+            'throttle:60,1',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+            \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        ],
+        
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        //'auth:admin-api' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
