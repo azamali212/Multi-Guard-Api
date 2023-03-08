@@ -18,8 +18,33 @@ class PermissionApiSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $apiPermissions = ['RoleCreate', 'RoleEdit', 'RoleDelete', 'RoleShow','PermissionCreate','PermissionEdit','PermissionShow','PermissionDelete','TeacherCreate','TeacherEdit','TeacherShow','TeacherDelete','StudentCreate','StudentEdit','StudentShow','StudentDelete'];
-        $teacherApiPermissions = ['TeacherShow','StudentCreate','StudentEdit','StudentShow','StudentDelete'];
+        $apiPermissions = [
+            'RoleCreate',
+            'RoleEdit',
+            'RoleDelete',
+            'RoleShow',
+            'PermissionCreate',
+            'PermissionEdit',
+            'PermissionShow',
+            'PermissionDelete',
+            'TeacherCreate',
+            'TeacherEdit',
+            'TeacherShow',
+            'TeacherDelete',
+            'StudentCreate',
+            'StudentEdit',
+            'StudentShow',
+            'StudentDelete'
+        ];
+        
+        $teacherApiPermissions = [
+            'TeacherShow',
+            'StudentCreate',
+            'StudentEdit',
+            'StudentShow',
+            'StudentDelete'
+        ];
+
         $studentApiPermissions = ['StudentShow'];
 
 
@@ -51,13 +76,13 @@ class PermissionApiSeeder extends Seeder
             'email' => 'admin@gmail.com',
         ]);
         $user->assignRole($apiRole);
-        
+
         $teacher = \App\Models\Teacher::factory()->create([
             'name' => 'Teacher',
             'email' => 'teacher@gmail.com',
         ]);
         $teacher->assignRole($teacherApiRole);
-        
+
         $student = \App\Models\Student::factory()->create([
             'name' => 'Student',
             'email' => 'student@gmail.com',

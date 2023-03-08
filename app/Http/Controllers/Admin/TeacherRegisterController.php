@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Teacher;
-use App\Services\SearchAndPaginateService;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class TeacherRegisterController extends Controller
@@ -27,43 +25,33 @@ class TeacherRegisterController extends Controller
     public function create(Request $request)
     {
 
-        //Validation
-        $rules = [
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-        ];
-
-        $validation = $request->validate($rules);
-
-        //Create Teacher
-        $teachers = new Teacher;
-
-        $teachers->name = $validation['name'];
-        $teachers->email = $validation['email'];
-        $teachers->password = $validation['password'];
-
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $roleNames = $request->input('roles');
+        $permissionsName = $request->input('permissions');
+    
+        $teachers = new Teacher();
+        $teachers->name = $name;
+        $teachers->email = $email;
+        $teachers->password = bcrypt($password);
         $teachers->save();
-
-        $token = $teachers->createToken('access-toke')->accessToken;
-
-        $teachers->assignRole('teacher_api');
-
-        return response()->json([$token => 'Teacher created successfully']);
+    
+        $roles = Role::whereIn('name', $roleNames)->get();
+        $teachers->assignRole($roles);
+        $permissions = Permission::whereIn('name',$permissionsName)->get();
+        $teachers->givePermissionTo($permissions);
+        return response()->json(['massege' => 'Teacher created successfully']);
     }
 
     public function show($id)
     {
+        
+        $teacher = Teacher::with('roles.permissions')->findOrFail($id);
 
-        $teachers = Teacher::find($id);
-
-        if (!$teachers) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-
-        return response()->json($teachers);
+        return response()->json(['teacher' => $teacher]);
+       
     }
-
 
     public function update(Request $request, $id)
     {
@@ -87,9 +75,8 @@ class TeacherRegisterController extends Controller
         if ($teachers) {
 
             return response()->json(['message' => 'Teacher Deleted']);
-            
         } else {
-            
+
             return response()->json(['message' => 'Failed to Deleted teacher']);
         }
     }

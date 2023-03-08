@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class Teacher extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    protected $guard_name = 'teacher-api';
+    protected $guard_name = ['admin-api','teacher-api','student-api'];
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +26,15 @@ class Teacher extends Authenticatable
         'email',
         'password',
     ];
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class);
+    // }
 
+    // public function permissions()
+    // {
+    //     return $this->belongsToMany(Permission::class);
+    // }
     /**
      * The attributes that should be hidden for serialization.
      *
