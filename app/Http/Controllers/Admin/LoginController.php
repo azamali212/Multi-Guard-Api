@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Library\ApiResponser;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -20,7 +21,12 @@ class LoginController extends Controller
         if (auth()->guard('admin')->attempt($data)) {
             config(['auth.guards.api.provider' => 'admin']);
             $token = auth()->guard('admin')->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' => $token], 200);
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => Carbon::now()->addDays(7)->timestamp,
+                'user' => $data,
+            ]);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }  

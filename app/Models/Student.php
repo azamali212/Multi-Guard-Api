@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
+
 
 class Student extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    protected $guard_name = 'student-api';
+    protected $guard_name =  ['admin-api','teacher-api','student-api'];
     /**
      * The attributes that are mass assignable.
      *
@@ -25,6 +27,7 @@ class Student extends Authenticatable
         'password',
     ];
 
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -34,6 +37,7 @@ class Student extends Authenticatable
         'password',
         'remember_token',
     ];
+
 
     /**
      * The attributes that should be cast.
