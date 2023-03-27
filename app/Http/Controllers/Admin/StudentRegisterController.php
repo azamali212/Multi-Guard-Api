@@ -13,7 +13,7 @@ class StudentRegisterController extends Controller
     public function index(Request $request)
     {
         $studentSearch = Student::query();
-        //dd($studentSearch);
+       
 
         if ($request->has('name')) {
             $studentSearch->where('name', 'like', '%' . $request->input('name') . '%');
@@ -21,7 +21,7 @@ class StudentRegisterController extends Controller
 
         // Paginate the results
         $students = $studentSearch->paginate(10);
-        return response()->json(['students' => $students]);
+        return response()->json([auth()->user()->getRoleNames(),'students' => $students]);
     }
 
     public function create(Request $request)

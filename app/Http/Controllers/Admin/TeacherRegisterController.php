@@ -17,9 +17,10 @@ class TeacherRegisterController extends Controller
      */
     public function index()
     {
+
         $teachers = Teacher::all();
 
-        return response()->json(['teachers' => $teachers]);
+        return response()->json([auth()->user()->getRoleNames(),'teachers' => $teachers]);
     }
 
     public function create(Request $request)
@@ -37,10 +38,10 @@ class TeacherRegisterController extends Controller
         $teachers->password = bcrypt($password);
         $teachers->save();
     
-        $roles = Role::whereIn('name', $roleNames)->get();
-        $teachers->assignRole($roles);
-        $permissions = Permission::whereIn('name',$permissionsName)->get();
-        $teachers->givePermissionTo($permissions);
+       $roles = Role::whereIn('name', $roleNames)->get();
+       $teachers->assignRole($roles);
+       $permissions = Permission::whereIn('name',$permissionsName)->get();
+       $teachers->givePermissionTo($permissions);
         return response()->json(['massege' => 'Teacher created successfully']);
     }
 

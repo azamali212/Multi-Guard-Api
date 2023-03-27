@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Support\Facades\Auth;
 
-class RoleMiddleware
+class CheckUserType
 {
     /**
      * Handle an incoming request.
@@ -15,13 +15,12 @@ class RoleMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ...$guards)
     {
-        dd("hlo");
-        if (auth()->check() && auth()->user()->role == 'teacher_api') {
-            return $next($request);
+        dd($guards);
+        if (Auth::guard('teacher-api')->check()) {
+            return response()->json(['massege' => 'Teacher created successfully']);
         }
-    
-        return response('Unauthorized', 401);
+        return $next($request);
     }
 }
